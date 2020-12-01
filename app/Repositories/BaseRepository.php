@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 
+use App\Helper\ApiHelper;
 use App\Http\Controllers\Api\BaseController;
 use App\Repositories\Interfaces\RepositoryInterface;
 use Illuminate\Http\Request;
@@ -34,20 +35,20 @@ class BaseRepository implements RepositoryInterface
         return $this->model::all();
     }
 
-//    /**
-//     * @return Illuminate\Database\Eloquent\Model
-//     * Базовый метод для получение всего по модели с проверкой по компании
-//     */
-//    public function allByCompany($array_id = null)
-//    {
-//        if (is_null($array_id) || is_bool($array_id)){
-//            $model_obj = $this->model::where( 'company_id',ApiHelper::getCompanyId() )->get();
-//        }else{
-//            $model_obj = $this->model::where( 'company_id',ApiHelper::getCompanyId() )->whereNotIn('id', $array_id)->get();
-//        }
-//
-//        return $model_obj;
-//    }
+    /**
+     * @return Illuminate\Database\Eloquent\Model
+     * Базовый метод для получение всего по модели с проверкой по компании
+     */
+    public function allByCompany($array_id = null)
+    {
+        if (is_null($array_id) || is_bool($array_id)){
+            $model_obj = $this->model::where( 'company_id',ApiHelper::getCompanyId() )->get();
+        }else{
+            $model_obj = $this->model::where( 'company_id',ApiHelper::getCompanyId() )->whereNotIn('id', $array_id)->get();
+        }
+
+        return $model_obj;
+    }
 
     /**
      * @param $id
@@ -80,20 +81,20 @@ class BaseRepository implements RepositoryInterface
         return $model_obj;
     }
 
-//    /**
-//     * @param $id
-//     * @return Illuminate\Database\Eloquent\Model
-//     * Базовый метод поиска модели по id и по компании
-//     */
-//    public function findByCompany($id)
-//    {
-//        $model_obj = $this->model::where('id',$id)->where( 'company_id',ApiHelper::getCompanyId() )->count();
-//        if ($model_obj === 0) {
-//            return $this->response->sendError('Find error', __('messages.not_find_model', [ 'model' => $this->model , 'id' =>$id ] ) ,1);
-//        }
-//
-//        return $this->model::find($id);
-//    }
+    /**
+     * @param $id
+     * @return Illuminate\Database\Eloquent\Model
+     * Базовый метод поиска модели по id и по компании
+     */
+    public function findByCompany($id)
+    {
+        $model_obj = $this->model::where('id',$id)->where( 'company_id',ApiHelper::getCompanyId() )->count();
+        if ($model_obj === 0) {
+            return $this->response->sendError('Find error', __('messages.not_find_model', [ 'model' => $this->model , 'id' =>$id ] ) ,1);
+        }
+
+        return $this->model::find($id);
+    }
 
     /**
      * @param Request $data
